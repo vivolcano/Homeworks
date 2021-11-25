@@ -7,39 +7,56 @@ import java.util.Scanner;
 public class Main {
 
     public static int array[];
-    public static int sums[] = new int[1];
+    public static int sums[];
     public static int sum;
 
     public static void main(String[] args) {
-
+        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
-
         System.out.print("Enter array size: ");
-        array = new int[scanner.nextInt()];
+        int numbersCount = scanner.nextInt();
 
-        createRandomArrayAndPrintElementSum();
+        System.out.print("Enter number of threads: ");
+        int threadsCount = scanner.nextInt();
 
-       Thread firstThread = new SumThread(0, array.length, 0);
-       firstThread.start();
-       firstThread.interrupt();
+        array = new int[numbersCount];
+        sums = new int[threadsCount];
 
-       System.out.println(Arrays.toString(sums));
+        createRandomArray(random);
 
-//        int byThreadSum = 0;
-//
-//        for (int i = 0; i < threadsCount; i++) {
-//            byThreadSum += sums[i];
-//        }
-//
-//        System.out.println(byThreadSum);
+        int realSum = Arrays.stream(array).sum();
+        System.out.println("single threading = " + realSum);
+
+        int threadSum = getByThreadSum(numbersCount, threadsCount, array);
+        System.out.println("multithreading sum = " + threadSum);
+
     }
 
-    private static void createRandomArrayAndPrintElementSum() {
-        Random random = new Random();
+    public static int getByThreadSum(int numbersCount, int threadsCount, int[] array) {
+        int byThreadSum = 0;
+        int numberOfElementsInOneThread = (int)Math.ceil((double) numbersCount / (double) threadsCount);
+        int[] sums = new int[threadsCount];
+        for (int i = 0; i < sums.length; i++) {
+            Thread sumThread =
+                    new SumThread(i * numberOfElementsInOneThread, (i + 1) * numberOfElementsInOneThread -1, array);
+            sumThread.start();
+            try {
+                sumThread.join();
+            } catch (InterruptedException exception) {
+                System.out.println(exception.getMessage());
+            }
+
+            sums[i] = sum;
+            byThreadSum += sums[i];
+        }
+        return byThreadSum;
+    }
+
+    private static void createRandomArray(Random random) {
         for (int i = 0; i < array.length; i++) {
             array[i] = random.nextInt(100);
         }
-        System.out.println("Сумма элементов в массиве = " + Arrays.stream(array).sum());
     }
+
 }
 
