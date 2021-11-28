@@ -27,7 +27,7 @@ class NumbersUtilTest {
     }
 
     @Test
-    @DisplayName("Проверка на выброс исключения")
+    @DisplayName("Проверка на выброс исключения при вводе отрицательного числа")
     void gcdException() {
 
         final int firstNumber = -27;
