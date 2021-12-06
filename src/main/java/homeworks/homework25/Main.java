@@ -27,5 +27,13 @@ public class Main {
         productRepository.findAllByPrice(99).forEach(System.out::println);
         productRepository.findAllByOrdersCount(2).forEach(System.out::println);
 
+        Product sofa = Product.builder()
+                .title("Диван")
+                .price(9900)
+                .number(10)
+                .build();
+
+        productRepository.save(sofa);
+
     }
 }

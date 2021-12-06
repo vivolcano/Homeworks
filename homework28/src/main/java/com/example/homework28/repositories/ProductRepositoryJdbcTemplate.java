@@ -1,17 +1,21 @@
-package homeworks.homework25;
+package com.example.homework28.repositories;
 
+import com.example.homework28.models.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-public class ProductRepositoryJdbcTemplateImpl implements ProductRepository {
+@Component
+public class ProductRepositoryJdbcTemplate implements ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ProductRepositoryJdbcTemplateImpl(DataSource dataSource) {
-
+    @Autowired
+    public ProductRepositoryJdbcTemplate(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -56,7 +60,6 @@ public class ProductRepositoryJdbcTemplateImpl implements ProductRepository {
                     ,productRowMapper
                     ,ordersCount);
     }
-
 
     @Override
     public void save(Product product) {

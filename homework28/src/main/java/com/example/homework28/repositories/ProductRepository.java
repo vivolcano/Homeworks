@@ -1,4 +1,6 @@
-package homeworks.homework25;
+package com.example.homework28.repositories;
+
+import com.example.homework28.models.Product;
 
 import java.util.List;
 
